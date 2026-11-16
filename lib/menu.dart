@@ -1,5 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:myportofolio_mobile/widgets/left_drawer.dart';
+import 'package:myportofolio_mobile/project_form.dart';
 
 class MyHomePage extends StatelessWidget {
   MyHomePage({super.key});
@@ -138,6 +139,13 @@ class ItemCard extends StatelessWidget {
                 backgroundColor: item.color,
                 )
             );
+          
+          if (item.name == "Tambah Proyek" || item.name == "Add Project") {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ProjectFormPage()),
+              );
+          }
         },
         child: Container(
           padding: const EdgeInsets.all(8),
