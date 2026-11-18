@@ -59,7 +59,7 @@ class _AchievementFormPageState extends State<AchievementFormPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Center(child: Text('Add Achievement Form')),
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.lightBlue,
         foregroundColor: Colors.white,
       ),
       drawer: const LeftDrawer(),
@@ -245,7 +245,7 @@ class _AchievementFormPageState extends State<AchievementFormPage> {
         padding: const EdgeInsets.all(8.0),
         child: ElevatedButton(
           style: ButtonStyle(
-            backgroundColor: WidgetStateProperty.all(Colors.indigo),
+            backgroundColor: WidgetStateProperty.all(Colors.lightBlue),
           ),
           onPressed: () {
             if (_formKey.currentState!.validate()) {
@@ -278,7 +278,7 @@ class _AchievementFormPageState extends State<AchievementFormPage> {
     );
 
     return AlertDialog(
-      title: const Text('Proyek berhasil ditambahkan!'),
+      title: const Text('Achievement added successfully!'),
       content: SingleChildScrollView(child: report),
       actions: [
         TextButton(
