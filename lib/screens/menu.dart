@@ -10,8 +10,9 @@ class MyHomePage extends StatelessWidget {
   final String kelas = "PBP F";
 
   final List<ItemHomepage> items = [
-    ItemHomepage("View Projects", Icons.folder, Colors.blue),
-    ItemHomepage("Add Project", Icons.add_circle, Colors.purple),
+    ItemHomepage("View Projects", Icons.folder, Colors.purple),
+    ItemHomepage("Add Project", Icons.add_circle, Colors.blue),
+    ItemHomepage("Add Achievement", Icons.add_circle, Colors.lightBlue),
     ItemHomepage("Logout", Icons.logout, Colors.red),
   ];
 
@@ -34,7 +35,7 @@ class MyHomePage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Horizontal row showing 3 InfoCards.
+       
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -46,7 +47,6 @@ class MyHomePage extends StatelessWidget {
 
             const SizedBox(height: 16.0),
 
-            // Greeting and 3-column action grid.
             Center(
               child: Column(
                 children: [
@@ -66,7 +66,7 @@ class MyHomePage extends StatelessWidget {
                     padding: const EdgeInsets.all(20),
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 10,
-                    crossAxisCount: 3,
+                    crossAxisCount: 4,
                     shrinkWrap: true,
                     children: items.map((ItemHomepage item) {
                       return ItemCard(item);
