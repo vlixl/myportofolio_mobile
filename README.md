@@ -47,4 +47,26 @@ Dalam pengerjaan tugas 7, AI digunakan dalam memahami beberapa konsep-konsep flu
     Terakhir, _full restart_ diperlukan ketika terdapat perubahan yang memerlukan aplikasi dijalankan ulang sepenuhnya, seperti perubahan pada kode native Android atau iOS.
 
 
+### Tugas 8
 
+#### AI Declaration
+Dalam pengerjaan tugas 8, saya menggunakan ChatGPT sebagai alat bantu untuk memahami konsep navigasi, struktur widget, layout, dan validasi form pada Flutter. AI juga digunakan untuk memeriksa kesesuaian penjelasan dengan implementasi kode pada repository.
+
+1. Perbedaan ketiga aksi navigator:
+    - `Navigator.push()` membuka sebuah page baru dan menambahkannya pada _navigation stack_, dengan page sebelumnya tetap berada di bawahnya
+    - `Navigator.pushReplacement()` membuka sebuah page baru, menggantikan page sebelumnya dalam stack
+    - `Navigator.pop()` menghapus route teratas dari navigation stack, sehingga route sebelumnya kembali ditampilkan.
+
+    Kartu aksi menggunakan `Navigator.push()` untuk membuka `ProjectFormPage`. Opsi Home pada drawer menavigasi kembali pada home screen, diimplementasi dengan menggunakan `pushReplacement()` untuk menggantikan page yang sedang aktif dalam navigation stack.
+
+2. `Scaffold` memberikan struktur dasar dari page, `AppBar` memberikan header dari page, dan `Drawer` memberikan menu navigasi yang konsisten. Menggunakan kembali widget-widget ini dalam aplikasi membuat page-page berbeda memiliki layout dan navigasi yang konsisten. 
+    Sebagai contoh, portfolio ini menggunakan indigo sebagai tema warna utama. Sebagai contoh, indigo digunakan untuk `AppBar` dan tombol save dalam project form, serta untuk drawer header. 
+
+3. Form dalam aplikasi menggunakan `Column` untuk menyusun input field secara vertikal, membuatnya mudah untuk dibaca dan diisi. Masing-masing field dibungkus dalam `Padding` untuk memberikan spacing, sedangkan `Align` mengetengahkan tombol save dalam sumbu horizontal.
+    `SingleChildScrollView` menyediakan scroll vertikal kepada user ketika panjang form melebihi panjang layar, seperti pada tampilan kecil atau ketika ada keyboard yang muncul. Hal ini mencegah _vertical overflow_ dan membuat form lebih mudah untuk digunakan.
+
+4. `GlobalKey<FormState>` memberikan akses pada `State` dari form tersebut. Masing-masing _validator_ mendefinisikan aturan-aturan validasi untuk field-nya, yang mana `validate()` mengeksekusi validator-validator tersebut ketika tombol `Save` ditekan. Dialog berhasil akan muncul hanya bila semua validasi tuntas.
+
+    Sebagai contoh, field nama project menolak input yang kosong atau hanya memiliki whitespace karena nama projek wajib diisi. Validator tersebut menggunakan `trim().isEmpty` dalam implementasinya.
+
+    Memilih jenis input atau papan ketik saja belum cukup karena hal tersebut hanya memengaruhi bagaimana pengguna memasukkan informasi, tanpa menjamin sebuah input yang valid. Validator tetap dibutuhkan untuk memastikan bahwa input memenuhi syarat yang ditetapkan.
