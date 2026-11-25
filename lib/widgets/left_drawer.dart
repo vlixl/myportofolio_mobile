@@ -8,7 +8,6 @@ import 'package:myportofolio_mobile/widgets/auth_guard.dart';
 import 'package:myportofolio_mobile/screens/login_screen.dart';
 
 class LeftDrawer extends StatelessWidget {
-  
   const LeftDrawer({super.key});
 
   @override
@@ -80,25 +79,23 @@ class LeftDrawer extends StatelessWidget {
           ),
 
           if (!isLoggedIn)
-          ListTile(
-            leading: const Icon(Icons.login),
-            title: const Text('login'),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => LoginScreen(),
-                ),
-              );
-            },
-          ),
+            ListTile(
+              leading: const Icon(Icons.login),
+              title: const Text('login'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginScreen()),
+                );
+              },
+            ),
 
           if (isLoggedIn)
-          ListTile(
-            leading: const Icon(Icons.logout),
-            title: const Text('logout'),
-            onTap: () => context.read<AuthState>().logout(),
-          ),
+            ListTile(
+              leading: const Icon(Icons.logout),
+              title: const Text('logout'),
+              onTap: () => context.read<AuthState>().logout(),
+            ),
         ],
       ),
     );

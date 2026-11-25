@@ -5,7 +5,8 @@ import 'package:myportofolio_mobile/screens/achievement_form.dart';
 import 'package:provider/provider.dart';
 import 'package:myportofolio_mobile/services/auth_state.dart';
 import 'package:myportofolio_mobile/widgets/auth_guard.dart';
-import 'package:myportofolio_mobile/screens/login_screen.dart';
+
+// import 'package:myportofolio_mobile/screens/login_screen.dart';
 
 class ItemCard extends StatelessWidget {
   final ItemHomepage item;

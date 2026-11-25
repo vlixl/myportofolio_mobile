@@ -21,8 +21,7 @@ class ProjectDetailScreen extends StatelessWidget {
               Text(project.title),
               Text(project.techStack),
               Text(project.description),
-              if (project.projectUrl.isNotEmpty)
-                Text(project.projectUrl),
+              if (project.projectUrl.isNotEmpty) Text(project.projectUrl),
             ],
           ),
         ),

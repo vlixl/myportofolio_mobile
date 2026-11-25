@@ -29,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     try {
       await auth.login(_username, _password);
-      if (mounted){
+      if (mounted) {
         Navigator.pop(context, true);
       }
     } on ApiException catch (e) {
@@ -40,10 +40,10 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       );
     } finally {
-      if (mounted){
+      if (mounted) {
         setState(() {
           _isSubmitting = false;
-        }); 
+        });
       }
     }
   }
