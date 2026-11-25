@@ -21,20 +21,22 @@ class ItemCard extends StatelessWidget {
               SnackBar(
                 content: Text("You pressed the ${item.name} button!"),
                 backgroundColor: item.color,
-                )
+              ),
             );
-          
+
           if (item.name == "Tambah Proyek" || item.name == "Add Project") {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const ProjectFormPage()),
-              );
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ProjectFormPage()),
+            );
           }
           if (item.name == "Add Achievement") {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const AchievementFormPage()),
-              );
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const AchievementFormPage(),
+              ),
+            );
           }
         },
         child: Container(
@@ -43,11 +45,7 @@ class ItemCard extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  item.icon,
-                  color: Colors.white,
-                  size: 30.0,
-                ),
+                Icon(item.icon, color: Colors.white, size: 30.0),
                 const Padding(padding: EdgeInsets.all(3)),
                 Text(
                   item.name,

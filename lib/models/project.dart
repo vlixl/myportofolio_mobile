@@ -6,15 +6,15 @@ part 'project.g.dart';
 @JsonSerializable(fieldRename: FieldRename.snake)
 class Project {
   const Project({
-    required this.title, 
-    required this.description, 
-    required this.techStack, 
-    required this.projectUrl, 
+    required this.title,
+    required this.description,
+    required this.techStack,
+    required this.projectUrl,
     this.projectImageUrl = '',
     this.id,
   });
 
-  factory Project.fromJson(Map<String, dynamic> json){
+  factory Project.fromJson(Map<String, dynamic> json) {
     return _$ProjectFromJson(json);
   }
 

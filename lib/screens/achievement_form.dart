@@ -36,7 +36,6 @@ class _AchievementFormPageState extends State<AchievementFormPage> {
 
   @override
   Widget build(BuildContext context) {
-
     Widget form = Form(
       key: _formKey,
       child: SingleChildScrollView(
