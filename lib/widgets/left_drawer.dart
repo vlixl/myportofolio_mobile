@@ -2,12 +2,18 @@ import 'package:material_ui/material_ui.dart';
 import 'package:myportofolio_mobile/screens/menu.dart';
 import 'package:myportofolio_mobile/screens/project_form.dart';
 import 'package:myportofolio_mobile/screens/achievement_form.dart';
+import 'package:provider/provider.dart';
+import 'package:myportofolio_mobile/services/auth_state.dart';
+import 'package:myportofolio_mobile/widgets/auth_guard.dart';
+import 'package:myportofolio_mobile/screens/login_screen.dart';
 
 class LeftDrawer extends StatelessWidget {
+  
   const LeftDrawer({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final isLoggedIn = context.watch<AuthState>().isLoggedIn;
     return Drawer(
       child: ListView(
         children: [
@@ -43,11 +49,14 @@ class LeftDrawer extends StatelessWidget {
               );
             },
           ),
+
           ListTile(
             leading: const Icon(Icons.add_circle_outline),
             title: const Text('Add Project'),
             // Navigasi ke halaman tambah proyek
-            onTap: () {
+            onTap: () async {
+              if (!await ensureLoggedIn(context)) return;
+              if (!context.mounted) return;
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -59,7 +68,7 @@ class LeftDrawer extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.add_circle_outline),
             title: const Text('Add Achievement'),
-            // Navigasi ke halaman tambah proyek
+            // Navigasi ke halaman tambah achievement
             onTap: () {
               Navigator.push(
                 context,
@@ -68,6 +77,27 @@ class LeftDrawer extends StatelessWidget {
                 ),
               );
             },
+          ),
+
+          if (!isLoggedIn)
+          ListTile(
+            leading: const Icon(Icons.login),
+            title: const Text('login'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => LoginScreen(),
+                ),
+              );
+            },
+          ),
+
+          if (isLoggedIn)
+          ListTile(
+            leading: const Icon(Icons.logout),
+            title: const Text('logout'),
+            onTap: () => context.read<AuthState>().logout(),
           ),
         ],
       ),

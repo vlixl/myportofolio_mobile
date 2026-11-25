@@ -2,6 +2,10 @@ import 'package:material_ui/material_ui.dart';
 import 'package:myportofolio_mobile/screens/menu.dart';
 import 'package:myportofolio_mobile/screens/project_form.dart';
 import 'package:myportofolio_mobile/screens/achievement_form.dart';
+import 'package:provider/provider.dart';
+import 'package:myportofolio_mobile/services/auth_state.dart';
+import 'package:myportofolio_mobile/widgets/auth_guard.dart';
+import 'package:myportofolio_mobile/screens/login_screen.dart';
 
 class ItemCard extends StatelessWidget {
   final ItemHomepage item;
@@ -14,7 +18,7 @@ class ItemCard extends StatelessWidget {
       color: item.color,
       borderRadius: BorderRadius.circular(12),
       child: InkWell(
-        onTap: () {
+        onTap: () async {
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
@@ -25,6 +29,8 @@ class ItemCard extends StatelessWidget {
             );
 
           if (item.name == "Tambah Proyek" || item.name == "Add Project") {
+            if (!await ensureLoggedIn(context)) return;
+            if (!context.mounted) return;
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const ProjectFormPage()),
@@ -37,6 +43,12 @@ class ItemCard extends StatelessWidget {
                 builder: (context) => const AchievementFormPage(),
               ),
             );
+          }
+          if (item.name == "Logout") {
+            context.read<AuthState>().logout();
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(const SnackBar(content: Text('Logout successful')));
           }
         },
         child: Container(
