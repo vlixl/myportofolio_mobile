@@ -2,6 +2,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:myportofolio_mobile/screens/menu.dart';
 import 'package:myportofolio_mobile/screens/project_form.dart';
 import 'package:myportofolio_mobile/screens/achievement_form.dart';
+import 'package:myportofolio_mobile/screens/project_list_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:myportofolio_mobile/services/auth_state.dart';
 import 'package:myportofolio_mobile/widgets/auth_guard.dart';
@@ -29,7 +30,14 @@ class ItemCard extends StatelessWidget {
               ),
             );
 
-          if (item.name == "Tambah Proyek" || item.name == "Add Project") {
+          if (item.name == "View Projects") {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ProjectListScreen()),
+            );
+          }
+
+          if (item.name == "Add Project") {
             if (!await ensureLoggedIn(context)) return;
             if (!context.mounted) return;
             Navigator.push(
