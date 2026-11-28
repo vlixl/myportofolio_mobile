@@ -32,82 +32,181 @@ class _ProjectListScreenState extends State<ProjectListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Achievements: Projects')),
+      appBar: AppBar(title: const Text('Projects')),
       drawer: const LeftDrawer(),
       body: FutureBuilder<List<Project>>(
         future: _projectsFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
+        builder: _screenBuilder,
+      ),
+    );
+  }
 
-          if (snapshot.hasError) {
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      'Failed to load projects: ${snapshot.error}',
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 12),
-                    ElevatedButton.icon(
-                      onPressed: _reload,
-                      icon: const Icon(Icons.refresh),
-                      label: const Text('Retry'),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          }
+  Widget _screenBuilder(
+    BuildContext context,
+    AsyncSnapshot<List<Project>> snapshot,
+  ) {
+    if (snapshot.connectionState == ConnectionState.waiting) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    if (snapshot.hasError) {
+      return _buildErrorScreen(snapshot);
+    }
+    final projects = snapshot.data ?? const <Project>[];
 
-          final projects = snapshot.data ?? const <Project>[];
+    if (projects.isEmpty) {
+      return _buildEmptyScreen();
+    }
 
-          if (projects.isEmpty) {
-            return RefreshIndicator(
-              onRefresh: _reload,
-              child: SingleChildScrollView(
-                physics: AlwaysScrollableScrollPhysics(),
-                child: Center(child: Text('No projects found.')),
-              ),
-            );
-          }
+    return _buildListScreen(projects);
+  }
 
-          return RefreshIndicator(
-            onRefresh: _reload,
-            child: ListView.builder(
-              physics: const AlwaysScrollableScrollPhysics(),
-              itemCount: projects.length,
-              itemBuilder: (context, index) {
-                final project = projects[index];
-
-                return Card(
-                  child: ListTile(
-                    title: Text(project.title),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(project.techStack),
-                        Text(project.description),
-                      ],
-                    ),
-                    trailing: Icon(Icons.chevron_right),
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            ProjectDetailScreen(project: project),
-                      ),
-                    ),
-                  ),
-                );
-              },
+  Widget _buildErrorScreen(AsyncSnapshot<List<Project>> snapshot) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Failed to load projects: ${snapshot.error}',
+              textAlign: TextAlign.center,
             ),
-          );
+            const SizedBox(height: 12),
+            ElevatedButton.icon(
+              onPressed: _reload,
+              icon: const Icon(Icons.refresh),
+              label: const Text('Retry'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildEmptyScreen() {
+    return RefreshIndicator(
+      onRefresh: _reload,
+      child: SingleChildScrollView(
+        physics: AlwaysScrollableScrollPhysics(),
+        child: Center(child: Text('No projects found.')),
+      ),
+    );
+  }
+
+  Widget _buildListScreen(List<Project> projects) {
+    return RefreshIndicator(
+      onRefresh: _reload,
+      child: ListView.builder(
+        physics: const AlwaysScrollableScrollPhysics(),
+        itemCount: projects.length + 1,
+        itemBuilder: (context, index) {
+          if (index == 0) return _buildHeader();
+
+          return buildColorfulCard(projects[index - 1], index - 1);
         },
+      ),
+    );
+  }
+
+  Widget _buildHeader() {
+    final theme = Theme.of(context);
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(32, 32, 32, 16),
+      child: Column(
+        spacing: 8,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'PORTFOLIO',
+            style: theme.textTheme.labelLarge?.copyWith(
+              color: theme.colorScheme.primary,
+              letterSpacing: 3,
+            ),
+          ),
+          Text(
+            'My Projects',
+            style: theme.textTheme.displaySmall?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Text(
+            'A collection of ideas brought to life through code.',
+            style: theme.textTheme.bodyLarge?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Color getCardColor(int index) {
+    const colors = [
+      Colors.red,
+      Colors.orange,
+      Colors.amber,
+      Colors.teal,
+      Colors.indigo,
+      Colors.deepPurple,
+    ];
+
+    return colors[index % colors.length];
+  }
+
+  Widget buildColorfulCard(Project project, int index) {
+    final theme = Theme.of(context);
+    final color = getCardColor(index);
+
+    final icon = CircleAvatar(
+      radius: 24,
+      backgroundColor: color,
+      foregroundColor: Colors.white,
+      child: const Icon(Icons.code),
+    );
+
+    final title = Padding(
+      padding: const EdgeInsets.symmetric(vertical: 15),
+      child: Text(project.title, style: theme.textTheme.titleLarge),
+    );
+
+    final subtitle = Column(
+      spacing: 12,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Chip(
+          label: Text(
+            project.techStack,
+            style: TextStyle(color: Color.lerp(color, Colors.black, 0.2)),
+          ),
+          backgroundColor: color.withValues(alpha: 0.2),
+          shape: const StadiumBorder(),
+          side: BorderSide.none,
+        ),
+        Text(
+          project.description,
+          style: theme.textTheme.bodyMedium?.copyWith(height: 1.5),
+        ),
+      ],
+    );
+
+    return Card(
+      color: Color.lerp(theme.colorScheme.surface, color, 0.08),
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+      child: ListTile(
+        contentPadding: const EdgeInsets.all(24),
+        horizontalTitleGap: 20,
+        leading: icon,
+        title: title,
+        subtitle: subtitle,
+        trailing: Icon(Icons.chevron_right_rounded, color: color),
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                ProjectDetailScreen(project: project, color: color),
+          ),
+        ),
       ),
     );
   }
