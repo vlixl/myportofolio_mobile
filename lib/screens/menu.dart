@@ -1,6 +1,22 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:myportofolio_mobile/screens/achievement/achievement_form.dart';
+import 'package:myportofolio_mobile/screens/project/project_form.dart';
+import 'package:myportofolio_mobile/screens/project/project_list_screen.dart';
+import 'package:myportofolio_mobile/services/auth_state.dart';
+import 'package:myportofolio_mobile/widgets/auth_guard.dart';
 import 'package:myportofolio_mobile/widgets/left_drawer.dart';
-import 'package:myportofolio_mobile/widgets/project_card.dart';
+import 'package:provider/provider.dart';
+import 'package:myportofolio_mobile/widgets/menu_cards.dart';
+
+class ItemHomepage {
+  final String name;
+  final IconData icon;
+  final Color color;
+
+  final void Function(BuildContext context) onTap;
+
+  ItemHomepage(this.name, this.icon, this.color, this.onTap);
+}
 
 class MyHomePage extends StatelessWidget {
   MyHomePage({super.key});
@@ -9,11 +25,45 @@ class MyHomePage extends StatelessWidget {
   final String nama = "Leow Vincent Vintizel";
   final String kelas = "PBP F";
 
-  final List<ItemHomepage> items = [
-    ItemHomepage("View Projects", Icons.folder, Colors.purple),
-    ItemHomepage("Add Project", Icons.add_circle, Colors.blue),
-    ItemHomepage("Add Achievement", Icons.add_circle, Colors.lightBlue),
-    ItemHomepage("Logout", Icons.logout, Colors.red),
+  late final List<ItemHomepage> items = [
+    ItemHomepage(
+      "View Projects",
+      Icons.folder,
+      Colors.purple,
+      (BuildContext context) => Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const ProjectListScreen()),
+      ),
+    ),
+
+    ItemHomepage("Add Project", Icons.add_circle, Colors.blue, (
+      BuildContext context,
+    ) async {
+      if (!await ensureLoggedIn(context)) return;
+      if (!context.mounted) return;
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const ProjectFormPage()),
+      );
+    }),
+
+    ItemHomepage(
+      "Add Achievement",
+      Icons.add_circle,
+      Colors.lightBlue,
+      (BuildContext context) => Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const AchievementFormPage()),
+      ),
+    ),
+
+    ItemHomepage("Logout", Icons.logout, Colors.red, (BuildContext context) {
+      context.read<AuthState>().logout();
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Logout successful')));
+    }),
+    
   ];
 
   @override
@@ -76,38 +126,4 @@ class MyHomePage extends StatelessWidget {
       ),
     );
   }
-}
-
-class InfoCard extends StatelessWidget {
-  // Information card displaying a title and its associated content.
-  final String title;
-  final String content;
-
-  const InfoCard({super.key, required this.title, required this.content});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 2.0,
-      child: Container(
-        width: MediaQuery.of(context).size.width / 3.5,
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-            const SizedBox(height: 8.0),
-            Text(content),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class ItemHomepage {
-  final String name;
-  final IconData icon;
-  final Color color;
-
-  ItemHomepage(this.name, this.icon, this.color);
 }

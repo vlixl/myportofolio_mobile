@@ -1,5 +1,5 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:myportofolio_mobile/screens/register_screen.dart';
+import 'package:myportofolio_mobile/screens/account/register_screen.dart';
 import 'package:myportofolio_mobile/services/api_client.dart';
 import 'package:myportofolio_mobile/services/auth_state.dart';
 import 'package:provider/provider.dart';
