@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:myportofolio_mobile/config.dart';
+import 'package:myportofolio_mobile/models/achievement.dart';
 import 'package:myportofolio_mobile/models/project.dart';
 
 /// Exception thrown when an API request returns a non-2xx status code.
@@ -55,6 +56,40 @@ class ApiClient {
     _ensureSuccess(response);
 
     return Project.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
+  }
+
+  Future<List<Achievement>> getAchievements() async {
+    final response = await _client.get(
+      _uri('/api/v1/achievements/'),
+      headers: const {'Accept': 'application/json'},
+    );
+    _ensureSuccess(response);
+
+    final decoded = jsonDecode(response.body) as List<dynamic>;
+    return decoded
+        .map((item) => Achievement.fromJson(item as Map<String, dynamic>))
+        .toList();
+  }
+
+  Future<Achievement> createAchievement(
+    Achievement achievement, {
+    required String token,
+  }) async {
+    final response = await _client.post(
+      _uri('/api/v1/achievements/'),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Token $token',
+      },
+      body: jsonEncode(achievement.toJson()),
+    );
+
+    _ensureSuccess(response);
+
+    return Achievement.fromJson(
+      jsonDecode(response.body) as Map<String, dynamic>,
+    );
   }
 
   Future<String> obtainToken(String username, String password) async {
