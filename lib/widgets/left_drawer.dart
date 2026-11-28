@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:myportofolio_mobile/services/auth_state.dart';
 import 'package:myportofolio_mobile/widgets/auth_guard.dart';
 import 'package:myportofolio_mobile/screens/login_screen.dart';
+import 'package:myportofolio_mobile/screens/register_screen.dart';
 
 class LeftDrawer extends StatelessWidget {
   const LeftDrawer({super.key});
@@ -86,6 +87,20 @@ class LeftDrawer extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => LoginScreen()),
+                );
+              },
+            ),
+
+          if (!isLoggedIn)
+            ListTile(
+              leading: const Icon(Icons.person_add),
+              title: const Text('register'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const RegisterScreen(),
+                  ),
                 );
               },
             ),

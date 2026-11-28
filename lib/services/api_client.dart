@@ -72,6 +72,30 @@ class ApiClient {
     return jsonDecode(response.body)['token'] as String;
   }
 
+  /// Creates a new account and returns its auth token.
+  Future<String> register(
+    String username,
+    String password,
+    String passwordConfirmation,
+  ) async {
+    final response = await _client.post(
+      _uri('/api/v1/auth/register/'),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode({
+        'username': username,
+        'password1': password,
+        'password2': passwordConfirmation,
+      }),
+    );
+
+    _ensureSuccess(response);
+
+    return jsonDecode(response.body)['token'] as String;
+  }
+
   Future<void> logout({required String token}) async {
     final response = await _client.post(
       _uri('/api/v1/auth/logout/'),

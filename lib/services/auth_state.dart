@@ -16,6 +16,19 @@ class AuthState extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> register(
+    String username,
+    String password,
+    String passwordConfirmation,
+  ) async {
+    _token = await _apiClient.register(
+      username,
+      password,
+      passwordConfirmation,
+    );
+    notifyListeners();
+  }
+
   Future<void> logout() async {
     final current = _token;
     if (current == null) return;

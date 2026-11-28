@@ -1,4 +1,5 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:myportofolio_mobile/screens/register_screen.dart';
 import 'package:myportofolio_mobile/services/api_client.dart';
 import 'package:myportofolio_mobile/services/auth_state.dart';
 import 'package:provider/provider.dart';
@@ -45,6 +46,17 @@ class _LoginScreenState extends State<LoginScreen> {
           _isSubmitting = false;
         });
       }
+    }
+  }
+
+  Future<void> _openRegister() async {
+    final registered = await Navigator.push<bool>(
+      context,
+      MaterialPageRoute(builder: (context) => const RegisterScreen()),
+    );
+    // Registering also logs in, so close the login screen as a successful login.
+    if (registered == true && mounted) {
+      Navigator.pop(context, true);
     }
   }
 
@@ -107,6 +119,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
                     : const Text('Login'),
+              ),
+              const SizedBox(height: 8),
+              TextButton(
+                onPressed: _isSubmitting ? null : _openRegister,
+                child: const Text("Don't have an account? Register"),
               ),
             ],
           ),
